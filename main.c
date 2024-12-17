@@ -1,4 +1,6 @@
 #include <gtk/gtk.h>
+#include "Position.h"
+
 typedef struct {
     gint width;
     gint height;
@@ -22,35 +24,6 @@ Dimension assignDimension(gint w, gint h)
     return (Dimension)dim;
 }
 
-GtkWindowPosition getWinPosition(gchar pos)
-{
-    //non-existent position
-    if(!pos)
-    {
-        printf("La position n'existe pas, dans getWinPosition()\n");
-        exit(-1);
-    }
-    //Return the corresponding position based on the given string
-    switch(pos)
-    {
-        case 'c'://center
-            return (GtkWindowPosition)GTK_WIN_POS_CENTER;
-
-        case 'm'://mouse
-            return (GtkWindowPosition)GTK_WIN_POS_MOUSE;
-
-        case 'a'://center allwayse
-            return (GtkWindowPosition)GTK_WIN_POS_CENTER_ALWAYS;
-
-        case 'p'://on parent
-            return (GtkWindowPosition)GTK_WIN_POS_CENTER_ON_PARENT;
-
-        default :
-            return (GtkWindowPosition)GTK_WIN_POS_NONE;
-
-    }
-
-}
 //Allocate Serjem and it's components
 Serjem* allocateSerjem()
 {
@@ -109,8 +82,9 @@ void createSerjem(Serjem* s)
     //Set the resizable option
     gtk_window_set_resizable(GTK_WINDOW(s->window), s->isResizable);
     //Set window's position
-    GtkWindowPosition gwp = getWinPosition(s->pos);
-    gtk_window_set_position(GTK_WINDOW(s->window), gwp);
+    //GtkWindowPosition gwp = getWinPosition(s->pos);
+    setWinPosition(GTK_WINDOW(s->window), createPosition(CUSTOM, 50, 0));
+    //gtk_window_set_position(GTK_WINDOW(s->window), gwp);
     //Set the window's icon
     GdkPixbuf* icon = gdk_pixbuf_new_from_file(s->icon, NULL);
     gtk_window_set_icon(GTK_WINDOW(s->window), icon);
